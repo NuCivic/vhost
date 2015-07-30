@@ -136,7 +136,8 @@ function vhost_destroy_dns($uri) {
  * Configure apache virtualhost file using the template.
  */
 function vhost_create_webserver_config($uri, $root, $os = 'Linux') {
-  if (file_exists("/etc/apache2/sites-available/$uri")) {
+  $domain = $site_record['uri'] . '.conf';
+  if (file_exists("/etc/apache2/sites-available/$domain")) {
     if (drush_confirm(dt('Vhost ' .  $uri . ' already exists. Do you want to keep its contents?'))) {
       return;
     }
@@ -144,12 +145,12 @@ function vhost_create_webserver_config($uri, $root, $os = 'Linux') {
 
   $str_config = VHOST_APACHE_TEMPLATE;
 
-  drush_log("Creating apache config (/etc/apache2/sites-enabled/$uri)", 'ok');
+  drush_log("Creating apache config (/etc/apache2/sites-enabled/$domain)", 'ok');
 
   $str_config = str_replace("#DOMAIN#", $uri, $str_config);
   $str_config = str_replace("#CODEPATH#", $root, $str_config);
 
-  $config_handle = fopen("/etc/apache2/sites-available/$uri", "w+");
+  $config_handle = fopen("/etc/apache2/sites-available/$domain", "w+");
   fwrite($config_handle, $str_config);
 
   if ($os == 'Linux') {
