@@ -136,7 +136,7 @@ function vhost_destroy_dns($uri) {
  * Configure apache virtualhost file using the template.
  */
 function vhost_create_webserver_config($uri, $root, $os = 'Linux') {
-  $domain = $site_record['uri'] . '.conf';
+  $domain = $uri . '.conf';
   if (file_exists("/etc/apache2/sites-available/$domain")) {
     if (drush_confirm(dt('Vhost ' .  $uri . ' already exists. Do you want to keep its contents?'))) {
       return;
